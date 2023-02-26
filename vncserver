@@ -1,0 +1,17 @@
+#!/sbin/openrc-rc
+command=/usr/bin/vncserver
+command_args=":1 -geometry 1280x800 -depth 24"
+start_pre() {
+    su -l root -c "/usr/bin/vncserver -kill :1" || true
+    rm -f /tmp/.X1-lock /tmp/.X11-unix/X1
+    return 0
+}
+stop() {
+    su -l root -c "/usr/bin/vncserver -kill :1" || true
+    return 0
+}
+restart() {
+    $0 stop
+    $0 start
+    return 0
+}
